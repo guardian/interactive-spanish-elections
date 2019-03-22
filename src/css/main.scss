@@ -1,0 +1,86 @@
+@import "mq";
+@import "fonts";
+@import "palette";
+// Uncomment for embeds
+//@import "embed";
+// Uncomment for full screen (including immersive article main media)
+//@import "fullscreen";
+.element-atom,
+.interactive-atom {
+    margin: 0 !important;
+}
+
+.provincia{
+	fill:none;
+	stroke:white;
+	stroke-width:1px;
+}
+.comunidad{
+	fill:none;
+	stroke:black;
+	stroke-width:2px;
+}
+
+.Cs{
+	fill:#ED6300;
+}
+.CDC{
+	fill:#ffabdb;
+}
+.EAJ-PNV{
+	fill:#91b52d;
+}
+.ECP{
+	fill:#5fd71f;
+}
+.EH.Bildu{
+	fill:#004e3a;
+}
+.ERC-CATSÍ{
+	fill:#f5be2c;
+}
+.GBAI{
+	fill:#ffe500;
+}
+.PCOE{
+	fill:#0cdc78;
+}
+.PODEMOS-COMPROMÍS-EUPV{
+	fill:#951d7a;
+}
+.PODEMOS-EN.MAREA-ANOVA-EU{
+	fill:#951d7a;
+}
+.PODEMOS-IU-EQUO{
+	fill:#951d7a;
+}
+.PP{
+	fill:#1896d7;
+}
+.PSOE{
+	fill:#c70000;
+}
+.CCa-PNC{
+	fill:#FFE500;
+}
+.null{
+	fill:#b5b5b5;
+}
+
+
+.map-label-outline{
+	text-anchor: middle;
+	font-family: 'Guardian Text Sans Web', Arial, sans-serif;
+	stroke:#000;
+	stroke-opacity: 0.25;
+	stroke-width: 2px;
+	stroke-linejoin: round;
+	stroke-linecap:butt;
+}
+
+.map-label{
+	text-anchor: middle;
+	font-family: 'Guardian Text Sans Web', Arial, sans-serif;
+	fill:#FFF;
+}
+
