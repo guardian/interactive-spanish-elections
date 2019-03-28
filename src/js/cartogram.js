@@ -113,12 +113,26 @@ svg.on("click", function() {
 let labels = svg.append('g').selectAll('text')
 .data(topojson.feature(centroids, centroids.objects["centroids-cartogram"]).features)
 .enter()
+.append('g')
+.attr('class', d => 'p' + d.properties.code)
 .append('text')
-.attr('name', d => console.log(d))
 .attr('class', 'cartogram-label')
 .attr('transform', d => "translate(" + (projection(d.geometry.coordinates)[0] - 5) + "," + projection(d.geometry.coordinates)[1] + ")")
 .text(d => d.properties.name)
 
+electoralData.provinces.map(p => {
+	let group = d3.select('.p' + p.code);
+
+	let width = group.node().getBBox().width;
+	let posX = group.node().getBBox().x + width + 5;
+	let posY = group.node().getBBox().y + 12;
+
+	group.append('text')
+	.attr('class', 'cartogram-number')
+	.text(p.deputies)
+	.attr('transform', 'translate(' + posX + ',' + posY + ')')
+
+})
 /*path(topojson.feature(municipalitiesMap, municipalitiesMap.objects['municipios_4326']));
 
 context.fillStyle = 
