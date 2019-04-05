@@ -21,6 +21,7 @@ let height = isMobile ? width : (width * 3 / 5);
 let svg = d3.select('.elections-map-wrapper').append('svg')
 .attr('width', width)
 .attr('height', height)
+.attr('class', 'cartogram')
 
 let projection = d3.geoAlbers()
 .center([0,43])
@@ -29,6 +30,10 @@ let projection = d3.geoAlbers()
 
 let path = d3.geoPath()
 .projection(projection)
+
+let parsed = d3.csvParse(provincesVotesRaw)
+let provincesVotes = parsed;
+let deputiesByProvince = [];
 
 projection.fitSize([width, height], topojson.feature(cartogram, cartogram.objects['diputados-hex']));
 
@@ -48,7 +53,20 @@ let provincesCarto = svg.append('g').selectAll('path')
 .append('path')
 .attr('d', path)
 .attr('class', 'provincia-hex')
-.on('mouseover', (d,i) => {console.log(d)})
+.on('mouseover', (d,i) => {
+
+	let province = d3.select('.geo-map .cover.p' + +String(d.properties.provincias_code).substr(4,5));
+
+	let className = province.attr('class')
+
+	let provinces = d3.selectAll('.geo-map .cover');
+
+	provinces.style('opacity', 1)
+	province.style('opacity', 0)
+
+})
+.on('mouseout', mouseout)
+.on("mousemove", mousemove)
 
 let comunidadesCarto = svg.append('g').selectAll('path')
 .data(topojson.feature(cartogram, cartogram.objects['comunidades-hex']).features)
@@ -61,7 +79,7 @@ let provincesDeputiesOutline = svg.append('g').selectAll('text')
 .data(topojson.feature(cartogram, cartogram.objects['centroids-hex']).features)
 .enter()
 .append('text')
-.attr('class','map-label-outline')
+.attr('class','cartogram-label-outline')
 .attr('transform', d => "translate(" + path.centroid(d)[0] + "," + path.centroid(d)[1] + ")")
 .text(d => d.properties.provinci11)
 
@@ -69,7 +87,7 @@ let provincesDeputies = svg.append('g').selectAll('text')
 .data(topojson.feature(cartogram, cartogram.objects['centroids-hex']).features)
 .enter()
 .append('text')
-.attr('class','map-label')
+.attr('class','cartogram-label')
 .attr('transform', d => "translate(" + path.centroid(d)[0] + "," + path.centroid(d)[1] + ")")
 .text(d => d.properties.provinci11)
 
@@ -92,14 +110,8 @@ let leabelsGroup = svg.append('g');
 })*/
 
 
-let parsed = d3.csvParse(provincesVotesRaw)
-let provincesVotes = parsed;
-let deputiesByProvince = [];
 
-
-
-
-/*electoralData.provinces.map(p => {
+electoralData.provinces.map(p => {
 
 	let results = provincesVotes.find(v => +v['Código de Provincia'] === +p.code.substr(4,5));
 
@@ -146,5 +158,16 @@ let deputiesByProvince = [];
 	})
 
 	accum = 0;
-})*/
+})
+
+
+
+function mousemove(event){
+	d3.select(this).style('fill-opacity',0)
+}
+function mouseout(event){
+	d3.select(this).style('fill-opacity',1)
+	let provinces = d3.selectAll('.geo-map .cover');
+	provinces.style('opacity', 0)
+}
 

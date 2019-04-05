@@ -19,6 +19,7 @@ let height = isMobile ? width : (width * 3 / 5);
 let svg = d3.select('.elections-map-wrapper').append('svg')
 .attr('width', width)
 .attr('height', height)
+.attr('class', 'geo-map')
 
 let projection = d3.geoAlbers()
 .center([0,43])
@@ -36,6 +37,13 @@ let provincesMap = svg.append('g').selectAll('path')
 .append('path')
 .attr('d', path)
 .attr('id', d => 'p' + +String(d.properties.code).substr(4,5))
+
+let provincesMapCover = svg.append('g').selectAll('path')
+.data(topojson.feature(map, map.objects.provincias).features)
+.enter()
+.append('path')
+.attr('d', path)
+.attr('class', d => 'cover p' + +String(d.properties.code).substr(4,5))
 
 let comunitiesMap = svg.append('g').selectAll('path')
 .data(topojson.feature(map, map.objects.comunidades).features)

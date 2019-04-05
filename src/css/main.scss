@@ -17,7 +17,8 @@
 }
 
 .provincia-hex{
-	fill-opacity:0;
+	fill-opacity:1;
+	fill:#DADADA;
 	stroke:white;
 	stroke-width:0.5px;
 }
@@ -88,6 +89,7 @@
 	stroke-width: 2px;
 	stroke-linejoin: round;
 	stroke-linecap:butt;
+	pointer-events: none;
 }
 
 .map-label-outline{
@@ -99,6 +101,7 @@
 	text-anchor: middle;
 	font-family: 'Guardian Text Sans Web', Arial, sans-serif;
 	fill:#FFF;
+	pointer-events: none;
 }
 
 .map-label{
@@ -117,4 +120,11 @@
 .map-label-circle{
 	fill:white;
 	stroke:black;
+}
+
+.cover{
+	opacity: 0;
+	fill:#DADADA;
+	stroke:white;
+	stroke-width:0.5px;
 }
