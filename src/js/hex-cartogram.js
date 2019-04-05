@@ -2,10 +2,12 @@ import * as d3B from 'd3'
 import * as d3Select from 'd3-selection'
 import * as topojson from 'topojson'
 import * as d3geo from 'd3-geo'
-import cartogram from '../assets/hex-cartogram.json'
+import cartogram from '../assets/hex-cartogram.json?123'
 import provincesVotesRaw from 'raw-loader!./../assets/Congreso _ Junio 2016 _ Resultados por circunscripción - Circunscripciones(1).csv'
 import electoralData from '../assets/electoral-data'
 import { $ } from "./util"
+
+console.log(cartogram)
 
 let d3 = Object.assign({}, d3B, d3Select, d3geo);
 
@@ -48,19 +50,28 @@ let provincesCarto = svg.append('g').selectAll('path')
 .attr('class', 'provincia-hex')
 .on('mouseover', (d,i) => {console.log(d)})
 
-let provincesDeputies = svg.append('g').selectAll('text')
-.data(provincesFeatures)
-.enter()
-.append('text')
-.attr('transform', d => "translate(" + path.centroid(d)[0] + "," + path.centroid(d)[1] + ")")
-.text(d => d.properties.provincias_deputies)
-
 let comunidadesCarto = svg.append('g').selectAll('path')
 .data(topojson.feature(cartogram, cartogram.objects['comunidades-hex']).features)
 .enter()
 .append('path')
 .attr('d', path)
 .attr('class', 'comunidad')
+
+let provincesDeputiesOutline = svg.append('g').selectAll('text')
+.data(topojson.feature(cartogram, cartogram.objects['centroids-hex']).features)
+.enter()
+.append('text')
+.attr('class','map-label-outline')
+.attr('transform', d => "translate(" + path.centroid(d)[0] + "," + path.centroid(d)[1] + ")")
+.text(d => d.properties.provinci11)
+
+let provincesDeputies = svg.append('g').selectAll('text')
+.data(topojson.feature(cartogram, cartogram.objects['centroids-hex']).features)
+.enter()
+.append('text')
+.attr('class','map-label')
+.attr('transform', d => "translate(" + path.centroid(d)[0] + "," + path.centroid(d)[1] + ")")
+.text(d => d.properties.provinci11)
 
 let leabelsGroup = svg.append('g');
 
