@@ -38,7 +38,7 @@ let provincesMap = svg.append('g').selectAll('path')
 .attr('id', d => 'p' + +String(d.properties.code).substr(4,5))
 
 let comunitiesMap = svg.append('g').selectAll('path')
-.data(topojson.feature(map, map.objects.comunidades_4326).features)
+.data(topojson.feature(map, map.objects.comunidades).features)
 .enter()
 .append('path')
 .attr('d', path)

@@ -2,7 +2,6 @@ import * as d3B from 'd3'
 import * as d3Select from 'd3-selection'
 import * as topojson from 'topojson'
 import * as d3geo from 'd3-geo'
-import * as d3Voronoi from 'd3-voronoi'
 import cartogram from '../assets/hex-cartogram.json'
 import provincesVotesRaw from 'raw-loader!./../assets/Congreso _ Junio 2016 _ Resultados por circunscripción - Circunscripciones(1).csv'
 import electoralData from '../assets/electoral-data'
@@ -29,10 +28,12 @@ let projection = d3.geoAlbers()
 let path = d3.geoPath()
 .projection(projection)
 
-projection.fitSize([width, height], topojson.feature(cartogram, cartogram.objects['diputados-merged']));
+projection.fitSize([width, height], topojson.feature(cartogram, cartogram.objects['diputados-hex']));
+
+let provincesFeatures = topojson.feature(cartogram, cartogram.objects['provinces-hex']).features
 
 let deputiesCarto = svg.append('g').selectAll('path')
-.data(topojson.feature(cartogram, cartogram.objects['diputados-merged']).features)
+.data(topojson.feature(cartogram, cartogram.objects['diputados-hex']).features)
 .enter()
 .append('path')
 .attr('d', path)
@@ -40,14 +41,22 @@ let deputiesCarto = svg.append('g').selectAll('path')
 .attr('class', 'deputy')
 
 let provincesCarto = svg.append('g').selectAll('path')
-.data(topojson.feature(cartogram, cartogram.objects['provinces-merged']).features)
+.data(provincesFeatures)
 .enter()
 .append('path')
 .attr('d', path)
-.attr('class', 'provincia')
+.attr('class', 'provincia-hex')
+.on('mouseover', (d,i) => {console.log(d)})
+
+let provincesDeputies = svg.append('g').selectAll('text')
+.data(provincesFeatures)
+.enter()
+.append('text')
+.attr('transform', d => "translate(" + path.centroid(d)[0] + "," + path.centroid(d)[1] + ")")
+.text(d => d.properties.provincias_deputies)
 
 let comunidadesCarto = svg.append('g').selectAll('path')
-.data(topojson.feature(cartogram, cartogram.objects['comunities-merged']).features)
+.data(topojson.feature(cartogram, cartogram.objects['comunidades-hex']).features)
 .enter()
 .append('path')
 .attr('d', path)
@@ -55,7 +64,7 @@ let comunidadesCarto = svg.append('g').selectAll('path')
 
 let leabelsGroup = svg.append('g');
 
-electoralData.mainProvinces.forEach(p => {
+/*electoralData.mainProvinces.forEach(p => {
 
 	leabelsGroup
 	.append('text')
@@ -69,11 +78,8 @@ electoralData.mainProvinces.forEach(p => {
 	.attr('transform', "translate(" + projection(p.location)[0] + "," + (projection(p.location)[1] + 5) + ")")
 	.text(d => p.province)
 
-})
+})*/
 
-
-let voronoi = d3.voronoi()
-.extent([[-1, -1], [width + 1, height + 1]]);
 
 let parsed = d3.csvParse(provincesVotesRaw)
 let provincesVotes = parsed;
