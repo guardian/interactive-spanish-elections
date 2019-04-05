@@ -2,9 +2,8 @@ import * as d3B from 'd3'
 import * as d3Select from 'd3-selection'
 import * as topojson from 'topojson'
 import * as d3geo from 'd3-geo'
-import diputadosCartogram from '../assets/diputados-merged'
-import provinciasCartogram from '../assets/provincias-merged'
-import comunidadesCartogram from '../assets/comunidades-merged'
+import * as d3Voronoi from 'd3-voronoi'
+import cartogram from '../assets/hex-cartogram.json'
 import provincesVotesRaw from 'raw-loader!./../assets/Congreso _ Junio 2016 _ Resultados por circunscripción - Circunscripciones(1).csv'
 import electoralData from '../assets/electoral-data'
 import { $ } from "./util"
@@ -15,8 +14,8 @@ const atomEl = $('.interactive-wrapper')
 
 let isMobile = window.matchMedia('(max-width: 980px)').matches;
 
-let width = isMobile ? atomEl.getBoundingClientRect().width  : atomEl.getBoundingClientRect().width;
-let height = isMobile ? width * 5 / 3 : (width * 3 / 5);
+let width = isMobile ? atomEl.getBoundingClientRect().width  : atomEl.getBoundingClientRect().width / 2;
+let height = isMobile ? width : (width * 3 / 5);
 
 let svg = d3.select('.elections-map-wrapper').append('svg')
 .attr('width', width)
@@ -30,10 +29,10 @@ let projection = d3.geoAlbers()
 let path = d3.geoPath()
 .projection(projection)
 
-projection.fitSize([width, height], topojson.feature(diputadosCartogram, diputadosCartogram.objects['diputados-merged']));
+projection.fitSize([width, height], topojson.feature(cartogram, cartogram.objects['diputados-merged']));
 
 let deputiesCarto = svg.append('g').selectAll('path')
-.data(topojson.feature(diputadosCartogram, diputadosCartogram.objects['diputados-merged']).features)
+.data(topojson.feature(cartogram, cartogram.objects['diputados-merged']).features)
 .enter()
 .append('path')
 .attr('d', path)
@@ -41,14 +40,14 @@ let deputiesCarto = svg.append('g').selectAll('path')
 .attr('class', 'deputy')
 
 let provincesCarto = svg.append('g').selectAll('path')
-.data(topojson.feature(provinciasCartogram, provinciasCartogram.objects['provincias-merged']).features)
+.data(topojson.feature(cartogram, cartogram.objects['provinces-merged']).features)
 .enter()
 .append('path')
 .attr('d', path)
 .attr('class', 'provincia')
 
 let comunidadesCarto = svg.append('g').selectAll('path')
-.data(topojson.feature(comunidadesCartogram, comunidadesCartogram.objects['comunidades-merged']).features)
+.data(topojson.feature(cartogram, cartogram.objects['comunities-merged']).features)
 .enter()
 .append('path')
 .attr('d', path)
@@ -60,24 +59,30 @@ electoralData.mainProvinces.forEach(p => {
 
 	leabelsGroup
 	.append('text')
-	.attr('class', 'map-label-outline')
+	.attr('class', 'cartogram-label-outline')
 	.attr('transform', "translate(" + projection(p.location)[0] + "," + (projection(p.location)[1] + 5) + ")")
 	.text(d => p.province)
 
 	leabelsGroup
 	.append('text')
-	.attr('class', 'map-label')
+	.attr('class', 'cartogram-label')
 	.attr('transform', "translate(" + projection(p.location)[0] + "," + (projection(p.location)[1] + 5) + ")")
 	.text(d => p.province)
 
 })
 
-let parsed = d3.csvParse(provincesVotesRaw)
 
+let voronoi = d3.voronoi()
+.extent([[-1, -1], [width + 1, height + 1]]);
+
+let parsed = d3.csvParse(provincesVotesRaw)
 let provincesVotes = parsed;
 let deputiesByProvince = [];
 
-electoralData.provinces.map(p => {
+
+
+
+/*electoralData.provinces.map(p => {
 
 	let results = provincesVotes.find(v => +v['Código de Provincia'] === +p.code.substr(4,5));
 
@@ -124,5 +129,5 @@ electoralData.provinces.map(p => {
 	})
 
 	accum = 0;
-})
+})*/
 

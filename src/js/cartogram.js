@@ -4,7 +4,8 @@ import * as topojson from 'topojson'
 import * as d3geo from 'd3-geo'
 import provincesVotesRaw from 'raw-loader!./../assets/Congreso _ Junio 2016 _ Resultados por circunscripción - Circunscripciones(1).csv'
 import provincesMap from '../assets/provincias'
-import squaresCartogram from '../assets/spanish-congress-cartogram'
+import comunidadesMap from '../assets/comunidades_4326'
+import squaresCartogram from '../assets/spanish-congress-cartogram?as'
 import centroids from '../assets/centroids-cartogram'
 import electoralData from '../assets/electoral-data'
 import { $ } from "./util" 
@@ -13,9 +14,9 @@ let d3 = Object.assign({}, d3B, d3Select, d3geo);
 
 const atomEl = $('.interactive-wrapper')
 
-let isMobile = window.matchMedia('(max-width: 980px)').matches;
+let isMobile = window.matchMedia('(max-width: 620px)').matches;
 
-let width = isMobile ? atomEl.getBoundingClientRect().width  : atomEl.getBoundingClientRect().width;
+let width = isMobile ? atomEl.getBoundingClientRect().width  : atomEl.getBoundingClientRect().width / 2;
 let height = isMobile ? width * 5 / 3 : (width * 3 / 5);
 
 let svg = d3.select('.elections-map-wrapper').append('svg')
@@ -23,23 +24,33 @@ let svg = d3.select('.elections-map-wrapper').append('svg')
 .attr('height', height)
 
 let projection = d3.geoAlbers()
-.center([0,43])
+//.center([4.5,43])
 .rotate([4,2])
-.scale(4000)
+//.scale(3600)
 
 let path = d3.geoPath()
 .projection(projection)
 
 projection.fitSize([width, height], topojson.feature(centroids, centroids.objects["centroids-cartogram"]));
 
-let provinces = topojson.mesh(provincesMap, provincesMap.objects.provincias).features;
+let provinces = topojson.mesh(provincesMap, provincesMap.objects.provincias);
 
-let map = svg.append('g')
+svg.append('g')
 .append('path')
-.attr('d', path(topojson.mesh(provincesMap,provincesMap.objects.provincias)))
+.attr('d', path(provinces))
 .style('fill', 'none')
-.style('stroke', '#B3B3B4')
+.style('stroke', '#d4d4d4')
 .style('stroke-width', 0.5)
+
+let comunidades = topojson.mesh(comunidadesMap, comunidadesMap.objects['comunidades_4326']);
+
+svg.append('g')
+.append('path')
+.attr('d', path(comunidades))
+.style('fill', 'none')
+.style('stroke', '#d4d4d4')
+.style('stroke-width', 1.5)
+.style('stroke-linecap', 'round')
 
 let carto = svg.append('g').selectAll('path')
 .data(topojson.feature(squaresCartogram, squaresCartogram.objects['spanish-congress-cartogram']).features)
@@ -47,7 +58,6 @@ let carto = svg.append('g').selectAll('path')
 .append('path')
 .attr('d', path)
 .attr('id', d => 'd' + d.properties.layer)
-.attr('class', 'deputy')
 
 let parsed = d3.csvParse(provincesVotesRaw)
 
@@ -93,7 +103,7 @@ electoralData.provinces.map(p => {
 
 			let sq = svg.select('#d' + p.code + number)
 
-			sq.attr('class', name)
+			sq.attr('class', 'deputy ' + name)
 
 			accum ++
 			

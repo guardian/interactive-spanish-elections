@@ -13,12 +13,18 @@
 .provincia{
 	fill:none;
 	stroke:white;
-	stroke-width:1px;
+	stroke-width:0.5px;
 }
 .comunidad{
 	fill:none;
 	stroke:black;
-	stroke-width:2px;
+	stroke-width:1px;
+}
+
+.deputy{
+	stroke:#DADADA;
+	stroke-width:0.5px;
+	fill:#DADADA;
 }
 
 .Cs{
@@ -31,7 +37,7 @@
 	fill:#91b52d;
 }
 .ECP{
-	fill:#5fd71f;
+	fill:#951d7a;
 }
 .EH.Bildu{
 	fill:#004e3a;
@@ -68,7 +74,7 @@
 }
 
 
-.map-label-outline{
+.cartogram-label-outline, .map-label-outline{
 	text-anchor: middle;
 	font-family: 'Guardian Text Sans Web', Arial, sans-serif;
 	stroke:#000;
@@ -78,18 +84,21 @@
 	stroke-linecap:butt;
 }
 
-.map-label{
+.map-label-outline{
+	text-anchor: start;
+}
+
+
+.cartogram-label, .map-label{
 	text-anchor: middle;
 	font-family: 'Guardian Text Sans Web', Arial, sans-serif;
 	fill:#FFF;
 }
 
-.cartogram-label{
-	text-anchor: start;
-	font-family: 'Guardian Text Sans Web', Arial, sans-serif;
-	font-size:12px;
-	fill:#333;
+.map-label{
+	text-anchor: initial;
 }
+
 
 .cartogram-number{
 	text-anchor: start;
@@ -99,3 +108,7 @@
 	fill:#333;
 }
 
+.map-label-circle{
+	fill:white;
+	stroke:black;
+}

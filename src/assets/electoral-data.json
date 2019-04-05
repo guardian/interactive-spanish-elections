@@ -25,9 +25,21 @@
 	{"province":"Seville", "location":[-5.33983783974849, 38.542035146043894]},
 	{"province":"Zaragoza", "location":[-1.6039204448338862, 41.36035103374516]},
 	{"province":"Biscay", "location":[-3.1275887157010187, 42.77414273010277]},
-	{"province":"Coruña", "location":[-8.167414534723072, 42.87085413018682]},
+	{"province":"La Coruña", "location":[-8.167414534723072, 42.87085413018682]},
 	{"province":"Las Palmas", "location":[3.509158656441394, 35.644528481690436]},
 	{"province":"Balearic Islands", "location":[2.8352284597117006, 39.65622787603671]}
+	],
+
+	"mainCities" : [
+	{"city":"Madrid", "location":[-3.8196207, 40.4378698]},
+	{"city":"Barcelona", "location":[2.1678363, 41.399005]},
+	{"city":"Valencia", "location":[-0.5015959,39.4079665]},
+	{"city":"Seville", "location":[-6.0250984,37.3754865]},
+	{"city":"Zaragoza", "location":[-0.9300004, 41.6517501]},
+	{"city":"Bilbao", "location":[-2.9685838, 43.2633807]},
+	{"city":"La Coruña", "location":[-8.4477031,43.3619312]},
+	{"city":"Las Palmas", "location":[3.727032910752714, 35.87092323915625]},
+	{"city":"Palma de Mallorca", "location":[2.610715,39.570064]}
 	],
 
 	"provinces" : [
