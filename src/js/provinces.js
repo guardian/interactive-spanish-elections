@@ -16,7 +16,7 @@ let isMobile = window.matchMedia('(max-width: 980px)').matches;
 let width = isMobile ? atomEl.getBoundingClientRect().width  : atomEl.getBoundingClientRect().width / 2;
 let height = isMobile ? width : (width * 3 / 5);
 
-let svg = d3.select('.elections-map-wrapper').append('svg')
+let svg = d3.select('#elections-geographical').append('svg')
 .attr('width', width)
 .attr('height', height)
 .attr('class', 'geo-map')
@@ -37,6 +37,20 @@ let provincesMap = svg.append('g').selectAll('path')
 .append('path')
 .attr('d', path)
 .attr('id', d => 'p' + +String(d.properties.code).substr(4,5))
+.on('mouseover', (d,i) => {
+
+	let province = d3.select('.cartogram .p' + +String(d.properties.code).substr(4,5));
+
+	let provinces = d3.selectAll('.cartogram .provincia-hex');
+
+	provinces.style('opacity', 1)
+	province.style('opacity', 0)
+
+	console.log('.cartogram .p' + +String(d.properties.provincias_code).substr(4,5))
+
+})
+/*.on('mouseout', mouseout)
+.on("mousemove", mousemove)*/
 
 let provincesMapCover = svg.append('g').selectAll('path')
 .data(topojson.feature(map, map.objects.provincias).features)
@@ -100,8 +114,8 @@ provincesVotes.map(province => {
 })
 
 
-svg.on("click", function() {
+/*svg.on("click", function() {
   console.log(projection.invert(d3.mouse(this)));
-});
+});*/
 
 

@@ -8,6 +8,22 @@
 .element-atom,
 .interactive-atom {
     margin: 0 !important;
+    z-index:1000!important;
+}
+
+.elections-map-wrapper{
+	position: relative;
+	float: left;
+}
+
+.elections-standfirst{
+
+  @include fs-headline(3);
+  font-weight: 200;
+  max-width: 280px;
+
+
+
 }
 
 .provincia{
@@ -127,4 +143,5 @@
 	fill:#DADADA;
 	stroke:white;
 	stroke-width:0.5px;
+	pointer-events:none;
 }

@@ -18,7 +18,7 @@ let isMobile = window.matchMedia('(max-width: 980px)').matches;
 let width = isMobile ? atomEl.getBoundingClientRect().width  : atomEl.getBoundingClientRect().width / 2;
 let height = isMobile ? width : (width * 3 / 5);
 
-let svg = d3.select('.elections-map-wrapper').append('svg')
+let svg = d3.select('#elections-cartogram').append('svg')
 .attr('width', width)
 .attr('height', height)
 .attr('class', 'cartogram')
@@ -52,7 +52,7 @@ let provincesCarto = svg.append('g').selectAll('path')
 .enter()
 .append('path')
 .attr('d', path)
-.attr('class', 'provincia-hex')
+.attr('class', d => 'provincia-hex p' + +String(d.properties.provincias_code).substr(4,5))
 .on('mouseover', (d,i) => {
 
 	let province = d3.select('.geo-map .cover.p' + +String(d.properties.provincias_code).substr(4,5));
