@@ -37,20 +37,9 @@ let provincesMap = svg.append('g').selectAll('path')
 .append('path')
 .attr('d', path)
 .attr('id', d => 'p' + +String(d.properties.code).substr(4,5))
-.on('mouseover', (d,i) => {
+.attr('class', 'province')
+.style('opacity', 1)
 
-	let province = d3.select('.cartogram .p' + +String(d.properties.code).substr(4,5));
-
-	let provinces = d3.selectAll('.cartogram .provincia-hex');
-
-	provinces.style('opacity', 1)
-	province.style('opacity', 0)
-
-	console.log('.cartogram .p' + +String(d.properties.provincias_code).substr(4,5))
-
-})
-/*.on('mouseout', mouseout)
-.on("mousemove", mousemove)*/
 
 let provincesMapCover = svg.append('g').selectAll('path')
 .data(topojson.feature(map, map.objects.provincias).features)
@@ -58,6 +47,12 @@ let provincesMapCover = svg.append('g').selectAll('path')
 .append('path')
 .attr('d', path)
 .attr('class', d => 'cover p' + +String(d.properties.code).substr(4,5))
+
+
+provincesMap
+.on('mouseover', mouseover)
+.on('mouseout', mouseout)
+.on("mousemove", mousemove)
 
 let comunitiesMap = svg.append('g').selectAll('path')
 .data(topojson.feature(map, map.objects.comunidades).features)
@@ -117,5 +112,37 @@ provincesVotes.map(province => {
 /*svg.on("click", function() {
   console.log(projection.invert(d3.mouse(this)));
 });*/
+
+
+function mouseover(d){
+
+	let cartoProvince = d3.select('.cartogram .p' + +String(d.properties.code).substr(4,5));
+	let cartoProvinces = d3.selectAll('.cartogram .provincia-hex');
+
+	cartoProvinces.style('opacity', 1)
+	cartoProvince.style('opacity', 0)
+
+	d3.selectAll('.cover').style('opacity', 1)
+	d3.select('.p' + +String(d.properties.code).substr(4,5)).style('opacity',0)
+
+}
+
+
+function mouseout(d){
+	
+
+	let provinces = d3.selectAll('.geo-map .cover');
+	provinces.style('opacity', 0)
+
+	let cartoProvinces = d3.selectAll('.cartogram .provincia-hex');
+	cartoProvinces.style('opacity', 1)
+
+
+
+}
+
+function mousemove(d){
+
+}
 
 

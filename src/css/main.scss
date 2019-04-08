@@ -22,12 +22,10 @@
   font-weight: 200;
   max-width: 280px;
 
-
-
 }
 
 .provincia{
-	fill:none;
+	fill:#DADADA;
 	stroke:white;
 	stroke-width:0.5px;
 }
@@ -136,6 +134,7 @@
 .map-label-circle{
 	fill:white;
 	stroke:black;
+	pointer-events:none;
 }
 
 .cover{

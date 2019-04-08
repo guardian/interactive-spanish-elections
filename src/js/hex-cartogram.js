@@ -53,18 +53,7 @@ let provincesCarto = svg.append('g').selectAll('path')
 .append('path')
 .attr('d', path)
 .attr('class', d => 'provincia-hex p' + +String(d.properties.provincias_code).substr(4,5))
-.on('mouseover', (d,i) => {
-
-	let province = d3.select('.geo-map .cover.p' + +String(d.properties.provincias_code).substr(4,5));
-
-	let className = province.attr('class')
-
-	let provinces = d3.selectAll('.geo-map .cover');
-
-	provinces.style('opacity', 1)
-	province.style('opacity', 0)
-
-})
+.on('mouseover', mouseover)
 .on('mouseout', mouseout)
 .on("mousemove", mousemove)
 
@@ -162,10 +151,21 @@ electoralData.provinces.map(p => {
 
 
 
-function mousemove(event){
+function mousemove(d){
 	d3.select(this).style('fill-opacity',0)
 }
-function mouseout(event){
+function mouseover(d){
+
+	let province = d3.select('.geo-map .cover.p' + +String(d.properties.provincias_code).substr(4,5));
+
+	let className = province.attr('class')
+
+	let provinces = d3.selectAll('.geo-map .cover');
+
+	provinces.style('opacity', 1)
+	province.style('opacity', 0)
+}
+function mouseout(d){
 	d3.select(this).style('fill-opacity',1)
 	let provinces = d3.selectAll('.geo-map .cover');
 	provinces.style('opacity', 0)
