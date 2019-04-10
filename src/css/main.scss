@@ -7,45 +7,65 @@
 //@import "fullscreen";
 .element-atom,
 .interactive-atom {
-    margin: 0 !important;
-    z-index:1000!important;
+    z-index:1000;
+    margin-left: 0px !important;
+
+    @include mq(leftCol) {
+    	margin-left: 40px !important;
+    }
+    @include mq(wide) {
+    	margin-left: 60px !important;
+    }
+}
+.elections-maps-wrapper{
+    float:left;
 }
 
 .elections-map-wrapper{
 	position: relative;
-	float: left;
+	float:left;
 }
 
-.elections-standfirst{
-
-  @include fs-headline(3);
-  font-weight: 200;
-  max-width: 280px;
-
-}
 
 .provincia{
-	fill:#DADADA;
-	stroke:white;
-	stroke-width:0.5px;
+	fill:#efefef;
 }
 
 .provincia-hex{
-	fill-opacity:1;
-	fill:#DADADA;
+	fill-opacity:0;
+	fill:#efefef;
 	stroke:white;
 	stroke-width:0.5px;
+
+	@include mq(mobile) {
+    	stroke-width:0px;
+    }
+
+    @include mq(tablet) {
+    	stroke-width:0.5px;
+    }
 }
 .comunidad{
 	fill:none;
-	stroke:black;
-	stroke-width:1px;
+	stroke:white;
+	pointer-events:none;
+	stroke-linejoin: round;
+	stroke-linecap:butt;
+	
+
+	@include mq(mobile) {
+    	stroke-width:1.2px;
+    }
+
+     @include mq(tablet) {
+    	stroke-width:2px;
+    }
 }
 
 .deputy{
-	stroke:#DADADA;
+	stroke:#efefef;
 	stroke-width:0.5px;
-	fill:#DADADA;
+	fill:#efefef;
 }
 
 .Cs{
@@ -95,33 +115,49 @@
 }
 
 
-.cartogram-label-outline, .map-label-outline{
+.cartogram-label-outline{
 	text-anchor: middle;
 	font-family: 'Guardian Text Sans Web', Arial, sans-serif;
-	stroke:#000;
-	stroke-opacity: 0.25;
-	stroke-width: 2px;
+	stroke:#333;
+	stroke-opacity: 0.15;
+	stroke-width: 4px;
 	stroke-linejoin: round;
 	stroke-linecap:butt;
 	pointer-events: none;
+	font-size: 13px;
+
+	@include mq(mobile) {
+    	display: none;
+    }
+
+    @include mq(tablet) {
+    	display: block;
+    }
 }
 
-.map-label-outline{
-	text-anchor: start;
-}
-
-
-.cartogram-label, .map-label{
+.cartogram-label{
 	text-anchor: middle;
 	font-family: 'Guardian Text Sans Web', Arial, sans-serif;
 	fill:#FFF;
 	pointer-events: none;
+	font-size: 13px;
+
+	@include mq(mobile) {
+    	display: none;
+    }
+
+     @include mq(tablet) {
+    	display: block;
+    }
 }
 
 .map-label{
-	text-anchor: initial;
+	text-anchor: middle;
+	font-family: 'Guardian Text Sans Web', Arial, sans-serif;
+	fill:#333;
+	pointer-events: none;
+	font-size:12px;
 }
-
 
 .cartogram-number{
 	text-anchor: start;
@@ -138,9 +174,68 @@
 }
 
 .cover{
-	opacity: 0;
-	fill:#DADADA;
-	stroke:white;
+	opacity: 1;
+	fill:#efefef;
+	stroke:#efefef;
 	stroke-width:0.5px;
 	pointer-events:none;
+}
+
+.tooltip{
+	min-width:210px;
+	height:auto;
+	padding:6px;
+	position:absolute;
+	z-index: 1011 !important;
+	font-size: 12px;
+	line-height: 16px;
+	font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+	background: #fff;
+	border: 1px solid #333;
+	display: none;
+	-webkit-flex-direction: column;
+	flex-direction: column;
+	color: #333333;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border-top: 1px solid #333;
+	box-shadow: 2px 2px 0 0 #333;
+
+	&.over{
+		display: flex;
+	}
+
+
+}
+
+.tooltip-title{
+	font-size: 14px;
+	font-family: "Guardian Headline","Guardian Egyptian Web","Guardian Headline Full",Georgia,serif;
+	font-weight: bold;
+	color: #000;
+	font-weight: 900;
+	border-bottom: 1px solid #efefef;
+	padding:5px;
+	margin-bottom:5px;
+}
+
+.tooltip-row:not(:last-child){
+	margin-bottom: 5px;
+	border-bottom: 1px solid #efefef;
+	height:20px;
+}
+
+.tooltip-party{
+	position:relative;
+	float: left;
+	width: 90%;
+
+}
+
+.tooltip-deputies{
+	position:relative;
+	float: right;
+	width: 10%;
+
+
 }

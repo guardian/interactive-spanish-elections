@@ -9,12 +9,12 @@ import { $ } from "./util"
 
 let d3 = Object.assign({}, d3B, d3Select, d3geo);
 
-const atomEl = $('.interactive-wrapper')
+let width = 300;
+let height = 230;
 
-let isMobile = window.matchMedia('(max-width: 980px)').matches;
+let tooltip = d3.select("#elections-geographical .tooltip")
 
-let width = isMobile ? atomEl.getBoundingClientRect().width  : atomEl.getBoundingClientRect().width / 2;
-let height = isMobile ? width : (width * 3 / 5);
+let padding = 30;
 
 let svg = d3.select('#elections-geographical').append('svg')
 .attr('width', width)
@@ -52,7 +52,7 @@ let provincesMapCover = svg.append('g').selectAll('path')
 provincesMap
 .on('mouseover', mouseover)
 .on('mouseout', mouseout)
-.on("mousemove", mousemove)
+.on('mousemove', mousemove)
 
 let comunitiesMap = svg.append('g').selectAll('path')
 .data(topojson.feature(map, map.objects.comunidades).features)
@@ -61,30 +61,13 @@ let comunitiesMap = svg.append('g').selectAll('path')
 .attr('d', path)
 .attr('class', 'comunidad')
 
-let leabelsGroup = svg.append('g');
-
-electoralData.mainCities.forEach(p => {
-
-	leabelsGroup
-	.append('circle')
-	.attr('class', 'map-label-circle')
-	.attr('cx', projection(p.location)[0])
-	.attr('cy', projection(p.location)[1])
-	.attr('r' , 3)
-
-	leabelsGroup
-	.append('text')
-	.attr('class', 'map-label-outline')
-	.attr('transform', "translate(" + (projection(p.location)[0] + 5) + "," + (projection(p.location)[1] + 5) + ")")
-	.text(d => p.city)
-
-	leabelsGroup
-	.append('text')
-	.attr('class', 'map-label')
-	.attr('transform', "translate(" + (projection(p.location)[0] + 5) + "," + (projection(p.location)[1] + 5) + ")")
-	.text(d => p.city)
-
-})
+let provincesDeputies = svg.append('g').selectAll('text')
+.data(topojson.feature(map, map.objects.provincias).features)
+.enter()
+.append('text')
+.attr('class','map-label')
+.attr('transform', d => "translate(" + path.centroid(d)[0] + "," + path.centroid(d)[1] + ")")
+.text(d => d.properties.deputies)
 
 let parsed = d3.csvParse(provincesVotesRaw)
 
@@ -119,11 +102,17 @@ function mouseover(d){
 	let cartoProvince = d3.select('.cartogram .p' + +String(d.properties.code).substr(4,5));
 	let cartoProvinces = d3.selectAll('.cartogram .provincia-hex');
 
-	cartoProvinces.style('opacity', 1)
-	cartoProvince.style('opacity', 0)
+	cartoProvinces.style('fill-opacity', 1)
+	cartoProvince.style('fill-opacity', 0)
 
 	d3.selectAll('.cover').style('opacity', 1)
 	d3.select('.p' + +String(d.properties.code).substr(4,5)).style('opacity',0)
+
+	let province = electoralData.provinces.find(e => d.properties.code == e.code)
+
+	tooltip.classed(" over", true)
+
+	tooltip.select('.tooltip-province').html(province.name)
 
 }
 
@@ -132,17 +121,37 @@ function mouseout(d){
 	
 
 	let provinces = d3.selectAll('.geo-map .cover');
-	provinces.style('opacity', 0)
+	provinces.style('opacity', 1)
 
 	let cartoProvinces = d3.selectAll('.cartogram .provincia-hex');
-	cartoProvinces.style('opacity', 1)
+	cartoProvinces.style('fill-opacity', 0)
 
-
+	tooltip.classed(" over", false)
 
 }
 
 function mousemove(d){
 
+	let left = d3.mouse(this)[0] + padding;
+	let top = d3.mouse(this)[1]  + padding;
+
+	tooltip.style('left', left + 'px')
+	tooltip.style('top',  top + 'px')
+
+	let tWidth = +tooltip.style("width").split('px')[0]
+	let tHeight = +tooltip.style("height").split('px')[0]
+	let tLeft = +tooltip.style("left").split('px')[0]
+
+	if(left > width / 2)
+	{
+		tooltip.style('left', left - tWidth + 'px')
+	}
+
+	if(top  > height / 2)
+	{
+		tooltip.style('top', (top - tHeight) - 50 + 'px')
+	}
+	
 }
 
 

@@ -23,7 +23,7 @@ let isMobile = window.matchMedia('(max-width: 980px)').matches;
 let width = isMobile ? atomEl.getBoundingClientRect().width  : atomEl.getBoundingClientRect().width;
 let height = isMobile ? width * 5 / 3 : (width * 3 / 5);
 
-let canvas = d3.select('.elections-map-wrapper').append('canvas')
+let canvas = d3.select('.elections-andalusia').append('canvas')
 .attr('width', width)
 .attr('height', height);
 
