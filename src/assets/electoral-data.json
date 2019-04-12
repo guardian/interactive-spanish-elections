@@ -4,7 +4,7 @@
 	{"party":"C's","name":"CIUDADANOS-PARTIDO DE LA CIUDADANÍA","color":"#ed6300"},
 	{"party":"CDC","name":"CONVERGÈNCIA DEMOCRÀTICA DE CATALUNYA","color":"#ffabdb"},
 	{"party":"EAJ-PNV","name":"EUZKO ALDERDI JELTZALEA-PARTIDO NACIONALISTA VASCO","color":"#91b52d"},
-	{"party":"ECP","name":"EN COMÚ PODEM-GUANYEM EL CANVI","color":"#5fd71f"},
+	{"party":"ECP","name":"EN COMÚ PODEM-GUANYEM EL CANVI","color":"#951d7a"},
 	{"party":"EH Bildu","name":"EUSKAL HERRIA BILDU","color":"#004e3a"},
 	{"party":"ERC-CATSÍ","name":"ESQUERRA REPUBLICANA/CATALUNYA SÍ","color":"#f5be2c"},
 	{"party":"GBAI","name":"","color":"#ffe500"},
@@ -16,6 +16,16 @@
 	{"party":"PSOE","name":"PARTIDO SOCIALISTA OBRERO ESPAÑOL","color":"#c70000"},
 	{"party":"CCa-PNC","name":"COALICIÓN CANARIA-PARTIDO NACIONALISTA CANARIO","color":"#FFE500"},
 	{"party":null,"name":"","color":"#b5b5b5"}
+	],
+
+	"mainComunidades" : [
+	{"comunidad":"Madrid", "location":[-3.9900262372489603, 40.551606900240685]},
+	{"comunidad":"Catalonia", "location":[0.08428014321266923, 41.91371534768068]},
+	{"comunidad":"Andalusia", "location":[-4.3750040512994035, 38.41316175695005]},
+	{"comunidad":"Basque Country", "location":[-2.8534025499709395, 42.69187146871295]},
+	{"comunidad":"Canary Islands", "location":[1.7096683967708142, 36.33742542438029]},
+	{"comunidad":"Balearic Islands", "location":[2.694164299635292, 39.084471848442]},
+	{"comunidad":"Galicia", "location":[-7.990244491201646, 42.51267579100914]}
 	],
 
 	"mainProvinces" : [
@@ -50,12 +60,12 @@
 	{"name":"Huelva","code":"340121","deputies":5},
 	{"name":"Jaén","code":"340123","deputies":5},
 	{"name":"Málaga","code":"340129","deputies":11},
-	{"name":"Sevilla","code":"340141","deputies":12},
+	{"name":"Seville","code":"340141","deputies":12},
 	{"name":"Huesca","code":"340222","deputies":3},
 	{"name":"Teruel","code":"340244","deputies":3},
 	{"name":"Zaragoza","code":"340250","deputies":7},
 	{"name":"Asturias","code":"340333","deputies":8},
-	{"name":"Islas Balears","code":"340407","deputies":8},
+	{"name":"Balearic Islands","code":"340407","deputies":8},
 	{"name":"Las Palmas","code":"340535","deputies":8},
 	{"name":"Santa Cruz de Tenerife","code":"340538","deputies":7},
 	{"name":"Cantabria","code":"340639","deputies":5},

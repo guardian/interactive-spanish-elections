@@ -16,10 +16,12 @@ let isMobile = window.matchMedia('(max-width: 700px)').matches;
 let maxWidth = 660;
 let maxHeight = maxWidth - 100;
 
-let width = isMobile ? atomEl.getBoundingClientRect().width : maxWidth;
-let height = isMobile ? 400 : maxHeight;
+atomEl.style.height = maxWidth + "px";
 
-let padding = 30;
+let width = isMobile ? atomEl.getBoundingClientRect().width : maxWidth;
+let height = isMobile ? 300 : maxHeight;
+
+let padding = 80;
 
 let tooltip = d3.select("#elections-cartogram .tooltip")
 
@@ -73,19 +75,19 @@ let comunidadesCarto = svg.append('g').selectAll('path')
 
 let leabelsGroup = svg.append('g');
 
-electoralData.mainProvinces.forEach(p => {
+electoralData.mainComunidades.forEach(p => {
 
 	leabelsGroup
 	.append('text')
 	.attr('class', 'cartogram-label-outline')
 	.attr('transform', "translate(" + (projection(p.location)[0] + 10) + "," + (projection(p.location)[1] + 5) + ")")
-	.text(d => p.province)
+	.text(d => p.comunidad)
 
 	leabelsGroup
 	.append('text')
 	.attr('class', 'cartogram-label')
 	.attr('transform', "translate(" + (projection(p.location)[0] + 10) +"," + (projection(p.location)[1] + 5) + ")")
-	.text(d => p.province)
+	.text(d => p.comunidad)
 
 })
 
@@ -101,12 +103,13 @@ electoralData.provinces.map(p => {
 			deputiesByProvince[p.code].push(
 			{
 				party:d.party,
-				deputies: results[d.party + " Diputados"]
+				deputies: results[d.party + " Diputados"],
+				votes:parseInt(results[d.party + " Votos"].split(',').join(''))
 			})
 		}
 	})
 
-	deputiesByProvince[p.code].sort( (a,b) => b.deputies - a.deputies);
+	deputiesByProvince[p.code].sort( (a,b) => b.votes - a.votes);
 
 	let accum = 1;
 
@@ -125,7 +128,7 @@ electoralData.provinces.map(p => {
 
 			if(dep.party === "C's") name = 'Cs'
 
-				s.attr('class', name)
+			s.attr('class', name)
 
 			let sq = svg.select('#d' + p.code + number)
 
@@ -185,6 +188,8 @@ function mouseout(d){
 	d3.selectAll('.geo-map .cover').style('opacity', 1)
 
 	tooltip.select('.tooltip-results').html('')
+
+	tooltip.style('left', 1000 + 'px')
 }
 
 function mousemove(d){
@@ -192,16 +197,17 @@ function mousemove(d){
 	let left = d3.mouse(this)[0] + padding;
 	let top = d3.mouse(this)[1]  + padding;
 
-	tooltip.style('left', left + 'px')
 	tooltip.style('top',  top + 'px')
 
 	let tWidth = +tooltip.style("width").split('px')[0]
 	let tHeight = +tooltip.style("height").split('px')[0]
-	let tLeft = +tooltip.style("left").split('px')[0]
 
 	if(left > width / 2)
 	{
-		tooltip.style('left', left - tWidth + 'px')
+		tooltip.style('left', width - tWidth - 3 + 'px')
+	}
+	else{
+		tooltip.style('left', 0 + 'px')
 	}
 
 	if(top  > height / 2)
@@ -210,4 +216,9 @@ function mousemove(d){
 	}
 	
 }
+
+svg.on("click", function() {
+  console.log(projection.invert(d3.mouse(this)));
+});
+
 

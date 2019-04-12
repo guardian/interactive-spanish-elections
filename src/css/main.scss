@@ -5,27 +5,38 @@
 //@import "embed";
 // Uncomment for full screen (including immersive article main media)
 //@import "fullscreen";
+
+
 .element-atom,
 .interactive-atom {
-    z-index:1000;
-    margin-left: 0px !important;
 
-    @include mq(leftCol) {
-    	margin-left: 40px !important;
-    }
-    @include mq(wide) {
-    	margin-left: 60px !important;
-    }
 }
+
+.element-atom{
+	z-index:1000;
+	margin-left: 0px !important;
+	max-width: 1260px;
+/*	border-top: 1px solid #dcdcdc;
+	border-bottom: 1px solid #dcdcdc;*/
+	background:white;
+/*	padding-top:7px;*/
+}
+
+
+
 .elections-maps-wrapper{
-    float:left;
+
 }
 
 .elections-map-wrapper{
 	position: relative;
 	float:left;
+
 }
 
+#elections-geographical{
+	margin-right: 50px;
+}
 
 .provincia{
 	fill:#efefef;
@@ -38,12 +49,12 @@
 	stroke-width:0.5px;
 
 	@include mq(mobile) {
-    	stroke-width:0px;
-    }
+		stroke-width:0px;
+	}
 
-    @include mq(tablet) {
-    	stroke-width:0.5px;
-    }
+	@include mq(tablet) {
+		stroke-width:0.5px;
+	}
 }
 .comunidad{
 	fill:none;
@@ -54,12 +65,12 @@
 	
 
 	@include mq(mobile) {
-    	stroke-width:1.2px;
-    }
+		stroke-width:1.2px;
+	}
 
-     @include mq(tablet) {
-    	stroke-width:2px;
-    }
+	@include mq(tablet) {
+		stroke-width:2px;
+	}
 }
 
 .deputy{
@@ -71,19 +82,19 @@
 .Cs{
 	fill:#ED6300;
 }
-.CDC{
+.CDC, .PDC{
 	fill:#ffabdb;
 }
 .EAJ-PNV{
 	fill:#91b52d;
 }
-.ECP{
+.ECP, .UP{
 	fill:#951d7a;
 }
 .EH.Bildu{
 	fill:#004e3a;
 }
-.ERC-CATSÍ{
+.ERC-CATSÍ, .ERC{
 	fill:#f5be2c;
 }
 .GBAI{
@@ -110,45 +121,77 @@
 .CCa-PNC{
 	fill:#FFE500;
 }
+.VOX{
+	fill:#9C835F;
+}
+.PAC{
+	fill:#FFE6EC;
+}
 .null{
 	fill:#b5b5b5;
+}
+
+.line-PSOE{
+	fill:none;
+	stroke-width:2px;
+	stroke:#c70000;
+}
+.line-PP{
+	fill:none;
+	stroke-width:2px;
+	stroke:#1896d7;
+}
+.line-Cs{
+	fill:none;
+	stroke-width:2px;
+	stroke:#ED6300;
+}
+.line-UP{
+	fill:none;
+	stroke-width:2px;
+	stroke:#951d7a;
+}
+.line-VOX{
+	fill:none;
+	stroke-width:2px;
+	stroke:#9C835F;
 }
 
 
 .cartogram-label-outline{
 	text-anchor: middle;
 	font-family: 'Guardian Text Sans Web', Arial, sans-serif;
-	stroke:#333;
-	stroke-opacity: 0.15;
-	stroke-width: 4px;
+	stroke:#FFF;
+	stroke-opacity: 0.6;
+	stroke-width: 3px;
 	stroke-linejoin: round;
 	stroke-linecap:butt;
 	pointer-events: none;
 	font-size: 13px;
 
 	@include mq(mobile) {
-    	display: none;
-    }
+		display: none;
+	}
 
-    @include mq(tablet) {
-    	display: block;
-    }
+	@include mq(tablet) {
+		display: block;
+	}
 }
 
 .cartogram-label{
 	text-anchor: middle;
 	font-family: 'Guardian Text Sans Web', Arial, sans-serif;
-	fill:#FFF;
+	fill:#333;
 	pointer-events: none;
 	font-size: 13px;
 
 	@include mq(mobile) {
-    	display: none;
-    }
+		display: none;
+	}
 
-     @include mq(tablet) {
-    	display: block;
-    }
+	@include mq(tablet) {
+		display: block;
+	}
 }
 
 .map-label{
@@ -192,9 +235,7 @@
 	font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
 	background: #fff;
 	border: 1px solid #333;
-	display: none;
-	-webkit-flex-direction: column;
-	flex-direction: column;
+	display:none;
 	color: #333333;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -202,7 +243,7 @@
 	box-shadow: 2px 2px 0 0 #333;
 
 	&.over{
-		display: flex;
+		display: block;
 	}
 
 
@@ -215,8 +256,13 @@
 	color: #000;
 	font-weight: 900;
 	border-bottom: 1px solid #efefef;
-	padding:5px;
+	padding-bottom: 15px;
 	margin-bottom:5px;
+}
+
+.tooltip-row {
+	display: flex;
+	flex-direction: row;
 }
 
 .tooltip-row:not(:last-child){
@@ -227,15 +273,64 @@
 
 .tooltip-party{
 	position:relative;
-	float: left;
-	width: 90%;
+	flex: 90%;
 
 }
 
 .tooltip-deputies{
 	position:relative;
-	float: right;
-	width: 10%;
+	justify-content: flex-end;
+}
 
+#elections-key{
+
+	width: 100%;
+	position:relative;
+	float: left;
+	font-size: 14px;
+	line-height: 16px;
+	font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+	padding-bottom:5px;
+	border-bottom:1px solid #efefef;
+	margin-bottom: 20px;
+}
+
+#elections-key svg{
+	width: 12px;
+	margin-right: 5px;
+}
+
+#elections-key ul{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+#elections-key li{
+	text-decoration: none;
+	display: flex;
+	float: left;
+	width: auto;
+	height: 15px;
+	margin-right: 10px;
+	margin-bottom: 5px;
+	padding-left: 0 !important;
+}
+
+.elections-map-headline{
+
+	font-size: 21px;
+	font-family: "Guardian Headline","Guardian Egyptian Web","Guardian Headline Full",Georgia,serif;
+	font-weight: bold;
+	color: #000;
+	font-weight: 900;
+	padding-bottom: 15px;
 
 }
+
+.line{
+	fill: none;
+	stroke: #333;
+	stroke-width:1px;
+}
+
+
