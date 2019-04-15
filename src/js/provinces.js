@@ -29,22 +29,26 @@ let paths = [
 
 ]
 
-let width = 300;
+const atomEl = $('.interactive-wrapper')
+
+let isMobile = window.matchMedia('(max-width: 620px)').matches;
+
+let width = isMobile ? atomEl.getBoundingClientRect().width : 300;
 let height = width;
 
 let tooltip = d3.select("#elections-geographical .tooltip")
 
 let padding = 80;
 
-let svg = d3.select('#elections-geographical').append('svg')
+let svg = d3.select('#coropleth').append('svg')
 .attr('width', width)
 .attr('height', height)
 .attr('class', 'geo-map')
 
-let projection = d3.geoAlbers()
-.center([0,43])
+let projection = d3.geoMercator()
+/*.center([0,43])
 .rotate([4,2])
-.scale(4000)
+.scale(4000)*/
 
 let path = d3.geoPath()
 .projection(projection)

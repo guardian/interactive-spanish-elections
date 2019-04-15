@@ -2,6 +2,7 @@ import * as d3B from 'd3'
 import * as d3Select from 'd3-selection'
 import * as topojson from 'topojson'
 import * as d3geo from 'd3-geo'
+import {event as currentEvent} from 'd3-selection';
 import cartogram from '../assets/deputies-hex.json'
 import provincesVotesRaw from 'raw-loader!./../assets/Congreso _ Junio 2016 _ Resultados por circunscripción - Circunscripciones(1).csv'
 import electoralData from '../assets/electoral-data'
@@ -19,22 +20,22 @@ let maxHeight = maxWidth - 100;
 atomEl.style.height = maxWidth + "px";
 
 let width = isMobile ? atomEl.getBoundingClientRect().width : maxWidth;
-let height = isMobile ? 300 : maxHeight;
+let height = isMobile ? width : maxHeight;
 
-let padding = 80;
+let padding = 20;
 
 let tooltip = d3.select("#elections-cartogram .tooltip")
 
-let svg = d3.select('#elections-cartogram').append('svg')
+let svg = d3.select('#elections-cartogram #cartogram').append('svg')
 .attr('width', width)
 .attr('height', height)
 .attr('class', 'cartogram')
 
-let projection = d3.geoAlbers()
-.center([0,43])
+let projection = d3.geoMercator()
+/*.center([0,43])
 .rotate([4,2])
 .scale(4000)
-
+*/
 let path = d3.geoPath()
 .projection(projection)
 
@@ -128,7 +129,7 @@ electoralData.provinces.map(p => {
 
 			if(dep.party === "C's") name = 'Cs'
 
-			s.attr('class', name)
+				s.attr('class', name)
 
 			let sq = svg.select('#d' + p.code + number)
 
@@ -194,31 +195,115 @@ function mouseout(d){
 
 function mousemove(d){
 
-	let left = d3.mouse(this)[0] + padding;
-	let top = d3.mouse(this)[1]  + padding;
 
-	tooltip.style('top',  top + 'px')
+	let left = document.getElementById('elections-cartogram').getBoundingClientRect().x;
+	let top = document.getElementById('cartogram').getBoundingClientRect().y;
 
 	let tWidth = +tooltip.style("width").split('px')[0]
 	let tHeight = +tooltip.style("height").split('px')[0]
 
-	if(left > width / 2)
-	{
-		tooltip.style('left', width - tWidth - 3 + 'px')
-	}
-	else{
-		tooltip.style('left', 0 + 'px')
+	let posX = 0;
+	let posY = currentEvent.clientY - top + padding
+
+	if(currentEvent.clientX - left > width /2){
+		posX += width - tWidth
 	}
 
-	if(top  > height / 2)
-	{
-		tooltip.style('top', (top - tHeight) - 50 + 'px')
+	if(currentEvent.clientY - top > height /2){
+		posY -= tHeight + padding * 2
 	}
+
+	tooltip.style('top', posY + 'px')
+	tooltip.style('left', posX + 'px')
 	
 }
 
-svg.on("click", function() {
+/*svg.on("click", function() {
   console.log(projection.invert(d3.mouse(this)));
 });
+*/
+
+
+if(isMobile)
+{
+
+	let mainComunidades = [
+	{"comunidad":"Madrid", "location":[-7.907373222825101, 40.44]},
+	{"comunidad":"Catalonia", "location":[1.8517667305883931, 43.846563304934755]},
+	{"comunidad":"Andalusia", "location":[-4.041508566088886, 36.297753886976146]},
+	{"comunidad":"Basque Country", "location":[-2.471860305570312, 43.846563304934755]},
+	{"comunidad":"Canary Islands", "location":[ 1.9651972192386167, 36.35804576123051]},
+	{"comunidad":"Balearic Islands", "location":[2.7383503261472213, 39.1090350573891]},
+	{"comunidad":"Galicia", "location":[-8.02631985465719, 43.846563304934755]}
+	]
+
+
+
+	let paths = [
+
+	{"from":[ -6.8282224882214635, 40.38930306353237], "to":[-5.260810664561033, 40.38930306353237]},
+	{"from":[ -2.310799659349214, 43.28778915512214 ],"to":[ -2.310799659349214, 43.646875860789585 ]},
+	{"from":[ 2.1136821408956274, 43.646875860789585 ],"to":[  2.1136821408956274, 42.72531740122323]},
+	{"from":[ -4.647601668029822, 36.943870391913876 ],"to":[  -4.647601668029822, 36.545091849925655 ]},
+	{"from":[ -7.910904739716214, 43.646875860789585 ],"to":[ -7.910904739716214, 43.20404486041459 ]}
+
+	]
+
+	mainComunidades.forEach(p => {
+
+		leabelsGroup
+		.append('text')
+		.attr('class', 'map-label')
+		.attr('transform', "translate(" + (projection(p.location)[0] + 10) +"," + (projection(p.location)[1] + 5) + ")")
+		.text(d => p.comunidad)
+
+	})
+
+	leabelsGroup.selectAll('path')
+	.data(paths)
+	.enter()
+	.append('path')
+	.attr('class', 'line')
+	.attr('d', d => lngLatToArc(d, 'from', 'to', 100))
+
+
+	function lngLatToArc(d, sourceName, targetName, bend){
+		// If no bend is supplied, then do the plain square root
+		bend = bend || 1;
+		// `d[sourceName]` and `d[targetname]` are arrays of `[lng, lat]`
+		// Note, people often put these in lat then lng, but mathematically we want x then y which is `lng,lat`
+
+		var sourceLngLat = d[sourceName],
+		targetLngLat = d[targetName];
+
+		if (targetLngLat && sourceLngLat) {
+			var sourceXY = projection( sourceLngLat ),
+			targetXY = projection( targetLngLat );
+
+			// Uncomment this for testing, useful to see if you have any null lng/lat values
+			// if (!targetXY) console.log(d, targetLngLat, targetXY)
+			var sourceX = sourceXY[0],
+			sourceY = sourceXY[1];
+
+			var targetX = targetXY[0],
+			targetY = targetXY[1];
+
+			var dx = targetX - sourceX,
+			dy = targetY - sourceY,
+			dr = Math.sqrt(dx * dx + dy * dy)*bend;
+
+			// To avoid a whirlpool effect, make the bend direction consistent regardless of whether the source is east or west of the target
+			var west_of_source = (targetX - sourceX) < 0;
+			if (west_of_source) return "M" + targetX + "," + targetY + "A" + dr + "," + dr + " 0 0,1 " + sourceX + "," + sourceY;
+			return "M" + sourceX + "," + sourceY + "A" + dr + "," + dr + " 0 0,1 " + targetX + "," + targetY;
+			
+		} else {
+			return "M0,0,l0,0z";
+		}
+	}
+
+
+
+}
 
 

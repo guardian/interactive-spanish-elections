@@ -226,7 +226,6 @@
 
 .tooltip{
 	min-width:210px;
-	height:auto;
 	padding:6px;
 	position:absolute;
 	z-index: 1011 !important;
@@ -241,6 +240,7 @@
 	box-sizing: border-box;
 	border-top: 1px solid #333;
 	box-shadow: 2px 2px 0 0 #333;
+	pointer-events:none;
 
 	&.over{
 		display: block;
@@ -283,17 +283,27 @@
 }
 
 #elections-key{
-
-	width: 100%;
 	position:relative;
-	float: left;
 	font-size: 14px;
 	line-height: 16px;
 	font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-	padding-bottom:5px;
-	border-bottom:1px solid #efefef;
-	margin-bottom: 20px;
+	margin-bottom: 25px;
+	pointer-events:none;
+	min-height: 20px;
+
+	@include mq(mobile) {
+		margin-bottom: 40px;
+	}
+
+	@include mq(tablet) {
+		margin-bottom: 10px;
+	}
 }
+
+#elections-cartogram #cartogram{
+	position:relative;
+}
+
 
 #elections-key svg{
 	width: 12px;
