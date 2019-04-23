@@ -100,10 +100,18 @@ electoralData.provinces.map(p => {
 	deputiesByProvince[p.code] = []
 
 	electoralData.parties.map(d => {
+
+		let partyName = d.party;
+
+		if(partyName == "PODEMOS-COMPROMÍS-EUPV")partyName = "Podemos-COMPROMÍS-EUPV"
+		if(partyName == "PODEMOS-EN MAREA-ANOVA-EU")partyName = "Podemos-EN MAREA-ANOVA-EU"
+		if(partyName == "PODEMOS-IU-EQUO")partyName = "Podemos-IU-EQUO"
+		if(partyName == "C's")partyName = "Citizens"
+
 		if(results[d.party + " Diputados"] > 0){
 			deputiesByProvince[p.code].push(
 			{
-				party:d.party,
+				party:partyName,
 				deputies: results[d.party + " Diputados"],
 				votes:parseInt(results[d.party + " Votos"].split(',').join(''))
 			})
