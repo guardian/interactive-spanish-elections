@@ -8,13 +8,21 @@
 
 
 .element-atom,
-.interactive-atom {
+.interactive-atom, body {
 
+	margin: 0px !important;
+}
+
+.interactive-wrapper {
+	margin-left: 10px;
+	background-color: white;
 }
 
 .element-atom{
 	z-index:1000;
-	margin-left: 0px !important;
+	margin-left: 10px !important;
+	margin: 0px !important;
+	background-color: white;
 	max-width: 1260px;
 /*	border-top: 1px solid #dcdcdc;
 	border-bottom: 1px solid #dcdcdc;*/
